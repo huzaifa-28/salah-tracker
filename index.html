@@ -3,76 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salah Tracker - Ultimate Edition</title>
+    <title>Salah Tracker Pro</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --on-time: #27ae60;
-            --delayed: #f39c12;
-            --missed: #e74c3c;
-            --bg: #f4f7f6;
-            --text: #2c3e50;
-            --card: white;
+            --primary: #2c3e50; --on-time: #27ae60; --delayed: #f39c12; --missed: #e74c3c;
+            --bg: #f4f7f6; --text: #2c3e50; --card: white;
         }
         body.dark {
-            --bg: #1a1a1a;
-            --text: #f4f7f6;
-            --card: #2c3e50;
+            --bg: #1a1a1a; --text: #f4f7f6; --card: #2c3e50;
         }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 20px; transition: 0.3s; }
-        .container { max-width: 500px; margin: 0 auto; background: var(--card); padding: 20px; border-radius: 15px; shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .prayer-row { padding: 15px 0; border-bottom: 1px solid #eee; }
-        .btn-group { display: flex; gap: 8px; margin-top: 10px; }
-        button { flex: 1; border: none; padding: 12px 5px; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; font-size: 0.8rem; opacity: 0.5; transition: 0.2s; }
-        .selected { opacity: 1 !important; outline: 3px solid #000; outline-offset: 2px; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 15px; transition: 0.3s; padding-bottom: 50px; }
+        .container { max-width: 500px; margin: 0 auto; background: var(--card); padding: 20px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        
+        /* Progress & Streak */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .stat-card { background: rgba(0,0,0,0.05); padding: 10px; border-radius: 10px; text-align: center; }
+        .progress-container { background: #eee; border-radius: 10px; height: 10px; margin: 10px 0; overflow: hidden; }
+        #progress-bar { background: var(--on-time); height: 100%; width: 0%; transition: 0.5s; }
+
+        .prayer-row { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .btn-group { display: flex; gap: 5px; margin-top: 8px; }
+        button { flex: 1; border: none; padding: 10px 2px; border-radius: 8px; cursor: pointer; color: white; font-weight: bold; font-size: 0.75rem; opacity: 0.4; transition: 0.2s; }
+        .selected { opacity: 1 !important; transform: scale(1.05); outline: 2px solid var(--text); }
         .btn-on { background: var(--on-time); }
         .btn-del { background: var(--delayed); }
         .btn-miss { background: var(--missed); }
-        .dark-toggle { background: #34495e; padding: 8px; border-radius: 5px; font-size: 0.7rem; }
-        .faq { margin-top: 30px; font-size: 0.9rem; border-top: 2px solid #eee; padding-top: 20px; }
-        input[type="date"] { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 5px; border: 1px solid #ccc; }
+        
+        .goal-section { margin-top: 20px; padding-top: 20px; border-top: 2px solid #eee; }
+        input[type="text"] { width: 80%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+        .dark-toggle { background: var(--primary); font-size: 0.7rem; opacity: 1; width: auto; padding: 5px 10px; }
+        .reminder { background: #d1ecf1; color: #0c5460; padding: 10px; border-radius: 10px; font-size: 0.8rem; margin-bottom: 15px; border-left: 5px solid #bee5eb; }
     </style>
 </head>
-<body>
+<body class="">
 
 <div class="container">
     <div class="header">
-        <h1>Salah Tracker</h1>
-        <button class="dark-toggle" onclick="document.body.classList.toggle('dark')">🌙 Dark Mode</button>
+        <h2>Salah Tracker</h2>
+        <button class="dark-toggle" onclick="document.body.classList.toggle('dark')">🌙 Mode</button>
     </div>
 
-    <input type="date" id="calendar">
+    <div class="reminder">✨ <strong>Daily Reminder:</strong> "The most beloved deed to Allah is prayer performed on time."</div>
+
+    <div class="stats-grid">
+        <div class="stat-card">🔥 Streak: <span id="streak-val">0</span> Days</div>
+        <div class="stat-card">📈 Today's Goal: <span id="percent-val">0</span>%</div>
+    </div>
+    <div class="progress-container"><div id="progress-bar"></div></div>
+
+    <input type="date" id="calendar" style="width:94%; padding:10px; margin-bottom:15px; border-radius:8px;">
     
     <div id="tracker"></div>
 
-    <button onclick="resetToday()" style="background:#7f8c8d; margin-top:20px; width:100%; opacity:1;">Reset Today</button>
-
-    <div class="faq">
-        <h3>FAQ & Notes</h3>
-        <p><strong>Note:</strong> Progress is saved on this device. Use the calendar above to log different days!</p>
-        <details>
-            <summary>Why track Delayed/Missed?</summary>
-            <p>Consistency is key! Tracking honestly helps you identify patterns and improve your timing.</p>
-        </details>
+    <div class="goal-section">
+        <h4>Daily Goals</h4>
+        <div id="goal-list"></div>
+        <div style="display:flex; gap:5px; margin-top:10px;">
+            <input type="text" id="goal-input" placeholder="e.g. Read 2 pages Quran">
+            <button onclick="addGoal()" style="background:var(--primary); opacity:1;">Add</button>
+        </div>
     </div>
+
+    <button onclick="resetToday()" style="background:#7f8c8d; margin-top:30px; width:100%; opacity:1;">Reset Data</button>
 </div>
 
 <script>
     const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-    const tracker = document.getElementById('tracker');
     const cal = document.getElementById('calendar');
-
-    // Set default date to today
     cal.valueAsDate = new Date();
 
     function render() {
-        tracker.innerHTML = '';
         const dateKey = cal.value;
         const data = JSON.parse(localStorage.getItem(dateKey)) || {};
+        const tracker = document.getElementById('tracker');
+        tracker.innerHTML = '';
 
+        let completed = 0;
         prayers.forEach(p => {
             const status = data[p] || '';
+            if(status === 'on' || status === 'del') completed++;
             const row = document.createElement('div');
             row.className = 'prayer-row';
             row.innerHTML = `
@@ -81,30 +91,81 @@
                     <button class="btn-on ${status==='on'?'selected':''}" onclick="save('${p}','on')">On Time</button>
                     <button class="btn-del ${status==='del'?'selected':''}" onclick="save('${p}','del')">Delayed</button>
                     <button class="btn-miss ${status==='miss'?'selected':''}" onclick="save('${p}','miss')">Missed</button>
-                </div>
-            `;
+                </div>`;
             tracker.appendChild(row);
         });
+
+        // Update Progress
+        const percent = Math.round((completed / 5) * 100);
+        document.getElementById('progress-bar').style.width = percent + '%';
+        document.getElementById('percent-val').innerText = percent;
+        
+        updateStreak();
+        renderGoals();
     }
 
     function save(p, s) {
-        const dateKey = cal.value;
-        const data = JSON.parse(localStorage.getItem(dateKey)) || {};
+        const data = JSON.parse(localStorage.getItem(cal.value)) || {};
         data[p] = s;
-        localStorage.setItem(dateKey, JSON.stringify(data));
+        localStorage.setItem(cal.value, JSON.stringify(data));
         render();
     }
 
-    function resetToday() {
-        if(confirm("Clear this day?")) {
-            localStorage.removeItem(cal.value);
-            render();
+    function updateStreak() {
+        let streak = 0;
+        let d = new Date();
+        while(true) {
+            let k = d.toISOString().split('T')[0];
+            let dayData = JSON.parse(localStorage.getItem(k)) || {};
+            let done = Object.values(dayData).filter(v => v === 'on' || v === 'del').length;
+            if(done >= 5) { streak++; d.setDate(d.getDate() - 1); } 
+            else break;
         }
+        document.getElementById('streak-val').innerText = streak;
+    }
+
+    // Goal Logic
+    function addGoal() {
+        const input = document.getElementById('goal-input');
+        if(!input.value) return;
+        const goals = JSON.parse(localStorage.getItem('goals')) || [];
+        goals.push({text: input.value, done: false});
+        localStorage.setItem('goals', JSON.stringify(goals));
+        input.value = '';
+        renderGoals();
+    }
+
+    function renderGoals() {
+        const goals = JSON.parse(localStorage.getItem('goals')) || [];
+        const list = document.getElementById('goal-list');
+        list.innerHTML = goals.map((g, i) => `
+            <div style="display:flex; justify-content:space-between; margin-bottom:5px; background:rgba(0,0,0,0.03); padding:8px; border-radius:5px;">
+                <span style="${g.done?'text-decoration:line-through':''}" onclick="toggleGoal(${i})">${g.text}</span>
+                <span onclick="delGoal(${i})" style="color:red; cursor:pointer">✕</span>
+            </div>
+        `).join('');
+    }
+
+    window.toggleGoal = (i) => {
+        const goals = JSON.parse(localStorage.getItem('goals'));
+        goals[i].done = !goals[i].done;
+        localStorage.setItem('goals', JSON.stringify(goals));
+        renderGoals();
+    }
+
+    window.delGoal = (i) => {
+        const goals = JSON.parse(localStorage.getItem('goals'));
+        goals.splice(i, 1);
+        localStorage.setItem('goals', JSON.stringify(goals));
+        renderGoals();
+    }
+
+    function resetToday() {
+        if(confirm("Clear everything?")) { localStorage.clear(); location.reload(); }
     }
 
     cal.addEventListener('change', render);
     render();
 </script>
-
 </body>
 </html>
