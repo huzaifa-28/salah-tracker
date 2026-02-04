@@ -243,10 +243,7 @@
         root.render(<App />);
     <script>
       if ('serviceWorker' in navigator) {
-        // Adding the scope here tells the browser exactly what to cover
-        navigator.serviceWorker.register('sw.js', { scope: './' })
-          .then(() => console.log('Service Worker Registered with Scope!'))
-          .catch((err) => console.log('Registration failed:', err));
+         navigator.serviceWorker.register('sw.js', { scope: './' });
       }
     </script>
   </body>
