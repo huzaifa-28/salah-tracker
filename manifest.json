@@ -46,13 +46,6 @@
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Mobile View"
-    },
-    {
-      "src": "screenshot1.jpg",
-      "sizes": "1080x1920",
-      "type": "image/jpeg",
-      "form_factor": "wide",
-      "label": "Tablet View"
     }
   ]
 }
