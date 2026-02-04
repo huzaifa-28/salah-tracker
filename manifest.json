@@ -35,14 +35,14 @@
     },
     {
       "src": "screenshot3.jpg",
-      "sizes": "1080x1920",
+      "sizes": "1080x2097",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Mobile View"
     },
     {
       "src": "screenshot4.jpg",
-      "sizes": "1080x1920",
+      "sizes": "1080x2130",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Mobile View"
