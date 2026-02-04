@@ -1,36 +1,28 @@
-const CACHE_NAME = 'salah-cache-v2';
+const CACHE_NAME = 'salah-v5';
 const ASSETS = [
   './',
-  'index.html',
-  'manifest.json',
-  'sw.js',
-  'icon512.png'
+  'index.html'
 ];
 
-// Install: Save all files to the cache
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
+      // If index.html is missing, this will fail. 
+      // Ensure the file is named exactly index.html!
       return cache.addAll(ASSETS);
     })
   );
   self.skipWaiting();
 });
 
-// Activate: Clean up old caches
 self.addEventListener('activate', (event) => {
   event.waitUntil(clients.claim());
 });
 
-// Fetch: Serve from cache even if offline
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      // Return the cached file if found, OR try the network
-      return response || fetch(event.request).catch(() => {
-        // If both fail (OFFLINE), force return the index.html
-        return caches.match('index.html');
-      });
+      return response || fetch(event.request);
     })
   );
 });
