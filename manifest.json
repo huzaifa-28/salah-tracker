@@ -21,21 +21,21 @@
   "screenshots": [
     {
       "src": "screenshot1.jpg",
-      "sizes": "1080x2050",
+      "sizes": "1080x2130",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Mobile View"
     },
     {
       "src": "screenshot2.jpg",
-      "sizes": "1080x2088",
+      "sizes": "1080x2130",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Mobile View"
     },
     {
       "src": "screenshot3.jpg",
-      "sizes": "1080x2097",
+      "sizes": "1080x2130",
       "type": "image/jpeg",
       "form_factor": "narrow",
       "label": "Mobile View"
